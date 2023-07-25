@@ -40,9 +40,6 @@ class User(models.Model):
         return self.name
 
 
-
-
-
 class Messanger(models.Model):
     name = models.CharField(
         max_length=32,
@@ -60,4 +57,19 @@ class Messanger(models.Model):
         db_table = 'Messanger'
         verbose_name = 'messanger'
         verbose_name_plural = 'messangers'
+
+
+class PhoneNumber(models.Model):
+    number = models.CharField(max_length=15)
+
+    def __str__(self):
+        return self.number
+
+    class Meta:
+        db_table = 'PhoneNumber'
+
+
+
+
+
 
