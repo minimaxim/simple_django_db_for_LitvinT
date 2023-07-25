@@ -48,3 +48,4 @@ class Messanger(models.Model):
         db_table = 'Messanger'
         verbose_name = 'messanger'
         verbose_name_plural = 'messangers'
+
