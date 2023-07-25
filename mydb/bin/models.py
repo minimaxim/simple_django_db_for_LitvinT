@@ -17,7 +17,7 @@ class User(models.Model):
         verbose_name='email',
         blank=True
     )
-    phone = models.IntegerField(
+    phone = models.CharField(
         max_length=32,
         verbose_name='phone',
         blank=True,
@@ -38,6 +38,9 @@ class User(models.Model):
 
     def __str__(self):
         return self.name
+
+
+
 
 
 class Messanger(models.Model):
