@@ -6,15 +6,15 @@ from django.contrib import admin
 from django.urls import path
 from django.shortcuts import render, redirect
 from .models import PhoneNumber, Messanger, User
-
+from .forms import CsvUserForm
 
 
 class PhoneNumberAdmin(admin.ModelAdmin):
     list_display = ('number',)
+
+
 admin.site.register(PhoneNumber, PhoneNumberAdmin)
 
-
-from .forms import CsvUserForm
 
 class UserAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'username', 'email', 'phone', 'messanger')
@@ -72,6 +72,7 @@ class UserAdmin(admin.ModelAdmin):
             "admin/upload_csv.html",
             context={"form": form},
         )
+
 
 admin.site.register(User, UserAdmin)
 
