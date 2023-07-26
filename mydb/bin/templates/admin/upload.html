@@ -1,0 +1,11 @@
+<!-- upload.html -->
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{ form }}
+  <select name="messanger">
+    {% for messanger in messangers %}
+      <option value="{{ messanger.pk }}">{{ messanger.name }}</option>
+    {% endfor %}
+  </select>
+  <button type="submit">Загрузить</button>
+</form>
