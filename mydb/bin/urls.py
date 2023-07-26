@@ -4,7 +4,9 @@ from . import views
 
 app_name = 'bin'
 
+
 urlpatterns = [
-    path('upload/txt/', views.upload_txt_file, name='upload_txt'),
-    path('upload/csv/', views.upload_csv_file, name='upload_csv')
+    # ... другие URL-паттерны ...
+    path('upload/csv/', views.upload_csv_file, name='upload_csv_file'),
+    path('admin/', views.admin_redirect, name='admin_redirect'),
 ]
