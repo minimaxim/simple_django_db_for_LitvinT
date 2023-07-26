@@ -18,6 +18,7 @@ from .forms import CsvUserForm
 
 class UserAdmin(admin.ModelAdmin):
     list_display = ('name', 'username', 'email', 'phone', 'messanger')
+    list_filter = ('messanger', )
 
     def save_model(self, request, obj, form, change):
         if form.cleaned_data.get('csv_file'):

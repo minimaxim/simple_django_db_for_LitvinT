@@ -44,7 +44,7 @@ def upload_csv_file(request):
         if form.is_valid():
             csv_file = form.cleaned_data['csv_file']
 
-            existing_names = set(User.objects.values_list('name', flat=True))
+            existing_phones = set(User.objects.values_list('phone', flat=True))
             default_messanger = Messanger.objects.first()
 
             csv_reader = csv.reader(csv_file.read().decode().splitlines())
@@ -53,11 +53,14 @@ def upload_csv_file(request):
             for line in csv_reader:
                 name, username, email, phone = line
 
+                if phone in existing_phones:
+                    continue  # Пользователь с таким номером телефона уже существует, пропускаем его
+
                 if not name:
-                    name = get_unique_name(existing_names)
-                    existing_names.add(name)
+                    name = get_unique_name(set(existing_phones))  # Передаем множество всех уже существующих номеров телефонов
 
                 user = User.objects.create(name=name, username=username, email=email, phone=phone, messanger=default_messanger)
+                existing_phones.add(phone)  # Добавляем номер телефона во множество существующих
 
             return redirect(reverse_lazy('admin:index'))
         else:

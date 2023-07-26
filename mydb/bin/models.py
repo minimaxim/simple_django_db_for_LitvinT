@@ -5,7 +5,7 @@ class User(models.Model):
     name = models.CharField(max_length=64, verbose_name='name', blank=True)
     username = models.CharField(max_length=128, verbose_name='username', blank=True)
     email = models.EmailField(max_length=128, verbose_name='email', blank=True)
-    phone = models.CharField(max_length=32, verbose_name='phone', blank=True, null=True)
+    phone = models.CharField(max_length=32, verbose_name='phone', blank=True, null=True, unique=True)
     messanger = models.ForeignKey('Messanger', on_delete=models.CASCADE, verbose_name='мессенджеры', null=False, blank=False)
     # Удалите поле messanger
 
