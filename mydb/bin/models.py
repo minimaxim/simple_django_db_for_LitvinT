@@ -19,14 +19,8 @@ class User(models.Model):
 
 
 class Messanger(models.Model):
-    name = models.CharField(
-        max_length=32,
-        verbose_name='category-messanger'
-    )
-    is_published = models.BooleanField(
-        default=True,
-        verbose_name='published'
-    )
+    name = models.CharField(max_length=32, verbose_name='category-messanger')
+    is_published = models.BooleanField(default=True, verbose_name='published')
 
     def __str__(self):
         return self.name
