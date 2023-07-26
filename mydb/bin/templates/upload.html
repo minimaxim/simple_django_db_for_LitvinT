@@ -1,14 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Upload TXT File</title>
-</head>
-<body>
-    <h1>Upload TXT File</h1>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Upload</button>
-    </form>
-</body>
-</html>
+<!-- upload.html -->
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{ form }}
+  <button type="submit">Загрузить</button>
+</form>

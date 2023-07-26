@@ -1,5 +1,5 @@
-# forms.py
+# mydb/bin/forms.py
 from django import forms
 
-class UploadTxtFileForm(forms.Form):
-    txt_file = forms.FileField()
+class TxtFileForm(forms.Form):
+    txt_file = forms.FileField(label='Выберите файл .txt')

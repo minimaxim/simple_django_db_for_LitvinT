@@ -1,20 +1,17 @@
-# views.py
-from django.shortcuts import render
-from .forms import UploadTxtFileForm
+# mydb/bin/views.py
+from django.shortcuts import render, redirect
+from .forms import TxtFileForm
 from .models import PhoneNumber
 
 def upload_txt_file(request):
     if request.method == 'POST':
-        form = UploadTxtFileForm(request.POST, request.FILES)
+        form = TxtFileForm(request.POST, request.FILES)
         if form.is_valid():
-            txt_file = form.cleaned_data['txt_file']
-            # Читаем данные из файла и записываем в таблицу PhoneNumber
-            with txt_file.open() as file:
-                for line in file:
-                    number = line.strip()  # Убираем лишние символы, если нужно
-                    PhoneNumber.objects.create(number=number)
-
+            txt_file = request.FILES['txt_file']
+            for line in txt_file:
+                number = line.decode('utf-8').strip()
+                PhoneNumber.objects.create(number=number)
+            return redirect('admin:index')  # Перенаправляем на страницу админки
     else:
-        form = UploadTxtFileForm()
-
+        form = TxtFileForm()
     return render(request, 'upload.html', {'form': form})
