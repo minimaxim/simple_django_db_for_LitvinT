@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, reverse
 from .models import User
 import pandas as pd
+import numpy as np  # Добавляем модуль numpy для обработки NaN значений
 
 def upload_excel_file(request):
     if request.method == 'POST':
@@ -18,6 +19,9 @@ def upload_excel_file(request):
             df = pd.read_excel(excel_file)
         except Exception as e:
             return render(request, 'upload.html', {'error': f'Ошибка при чтении файла: {e}'})
+
+        # Заменяем NaN значения на пустую строку
+        df.replace({np.nan: ''}, inplace=True)
 
         # Проходим по DataFrame и создаем записи в базе данных
         for _, row in df.iterrows():
