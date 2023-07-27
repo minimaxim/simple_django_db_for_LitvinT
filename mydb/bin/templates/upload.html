@@ -1,6 +1,18 @@
-<!-- upload.html -->
-<form method="post" enctype="multipart/form-data">
-  {% csrf_token %}
-  {{ form }}
-  <button type="submit">Загрузить</button>
-</form>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Загрузка файла</title>
+</head>
+<body>
+    <h1>Загрузка файла</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="excel_file" accept=".xlsx">
+        <input type="submit" value="Загрузить">
+    </form>
+    {% if error %}
+        <p>{{ error }}</p>
+    {% endif %}
+</body>
+</html>
