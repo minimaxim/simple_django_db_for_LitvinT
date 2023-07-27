@@ -7,7 +7,7 @@ class User(models.Model):
     country = models.CharField(max_length=16, verbose_name='country', blank=True)
     email = models.EmailField(max_length=128, verbose_name='email', blank=True)
     phone = models.CharField(max_length=32, verbose_name='phone', blank=True, null=True, unique=True)
-    login_bitmain = models.CharField(max_length=128, verbose_name='login_bitmain', unique=True)
+    login_bitmain = models.CharField(max_length=128, verbose_name='login_bitmain', blank=True)
     telegram_link = models.CharField(max_length=128, verbose_name='telegram_link', blank=True)
     instagram_link = models.CharField(max_length=128, verbose_name='instagram_link', blank=True)
     twitter_link = models.CharField(max_length=128, verbose_name='twitter_link', blank=True)
