@@ -8,6 +8,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from .serializers import UserSerializer
 from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+
 
 
 def upload_user_excel_file(request):
@@ -355,9 +357,22 @@ class UserList(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class CustomTokenObtainPairView(TokenObtainPairView):
+    # Добавляем свойство permission_classes, чтобы отключить аутентификацию для получения токена
+    permission_classes = []
+
+
+class CustomProtectedView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        return Response({'message': 'This is a protected view'})
+
+
 class ProtectedView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        # Ваш код для защищенного представления
-        return Response({'message': 'This is a protected view'})
+        users = User.objects.all()
+        serializer = UserSerializer(users, many=True)  # Предполагая, что у вас есть сериализатор для модели User
+        return Response(serializer.data)

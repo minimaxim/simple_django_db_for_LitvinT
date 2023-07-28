@@ -1,18 +1,16 @@
+import json
+
 import requests
 
-def get_data_from_api():
-    url = 'http://127.0.0.1:8000/api/users/?format=json'  # Замените на URL вашего JSON API
+url = 'http://127.0.0.1:8000/api/protected/'
+token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkwNTM3MDA0LCJpYXQiOjE2OTA1MzY3MDQsImp0aSI6IjI5NDQwMTVlYmM5ZjQ0ZGY5MTMyMGI2NjkxMTRjZTlmIiwidXNlcl9pZCI6MX0.TNtAIpsl2xiDfB8LWzv4PqX5QI-17GYpBAVTP7g1CfU'
+headers = {'Authorization': f'Bearer {token}'}
 
-    try:
-        response = requests.get(url)
-        response.raise_for_status()  # Проверяем наличие ошибок при запросе
-        data = response.json()
-        return data
-    except requests.exceptions.RequestException as e:
-        print('Ошибка при запросе к API:', e)
-        return None
+response = requests.get(url, headers=headers)
 
-data = get_data_from_api()
-if data is not None:
-    # Обработайте данные, полученные из JSON API
-    print(data)
+if response.status_code == 200:
+    data = response.json()
+    formatted_data = json.dumps(data, indent=4)
+    print(formatted_data)
+else:
+    print('Ошибка при запросе к API:', response.status_code)
