@@ -11,7 +11,6 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 
-
 def upload_user_excel_file(request):
     if request.method == 'POST':
         if 'excel_file' not in request.FILES:
@@ -120,7 +119,8 @@ def upload_company_excel_file(request):
             country = row.get('country', '')
             email = row.get('email', '')
             phone = row.get('phone', '')
-            login_bitmain = row.get('login_bitmain', '')
+            individual = row.get('individual', '')
+            individual2 = row.get('individual2', '')
             telegram_link = row.get('telegram_link', '')
             instagram_link = row.get('instagram_link', '')
             twitter_link = row.get('twitter_link', '')
@@ -135,7 +135,8 @@ def upload_company_excel_file(request):
                     'name': name,
                     'country': country,
                     'email': email,
-                    'login_bitmain': login_bitmain,
+                    'individual': individual,
+                    'individual2': individual2,
                     'telegram_link': telegram_link,
                     'instagram_link': instagram_link,
                     'twitter_link': twitter_link,
@@ -153,8 +154,10 @@ def upload_company_excel_file(request):
                     user.country = country
                 if not user.email and email:
                     user.email = email
-                if not user.login_bitmain and login_bitmain:
-                    user.login_bitmain = login_bitmain
+                if not user.individual and individual:
+                    user.individual = individual
+                if not user.individual2 and individual2:
+                    user.individual2 = individual2
                 if not user.telegram_link and telegram_link:
                     user.telegram_link = telegram_link
                 if not user.instagram_link and instagram_link:
@@ -189,7 +192,7 @@ def upload_company_csv_file(request):
 
         try:
             df = pd.read_csv(csv_file, delimiter=',',
-                             names=['name', 'country', 'email', 'phone', 'login_bitmain', 'telegram_link',
+                             names=['name', 'country', 'email', 'phone', 'individual', 'individual2', 'telegram_link',
                                     'instagram_link', 'twitter_link', 'vk_link', 'facebook_link', 'linkedin_link',
                                     'whatsapp_link'])
 
@@ -203,7 +206,8 @@ def upload_company_csv_file(request):
             country = row['country']
             email = row['email']
             phone = row['phone']
-            login_bitmain = row['login_bitmain']
+            individual = row['individual']
+            individual2 = row['individual2']
             telegram_link = row['telegram_link']
             instagram_link = row['instagram_link']
             twitter_link = row['twitter_link']
@@ -218,7 +222,8 @@ def upload_company_csv_file(request):
                     'name': name,
                     'country': country,
                     'email': email,
-                    'login_bitmain': login_bitmain,
+                    'individual': individual,
+                    'individual2': individual2,
                     'telegram_link': telegram_link,
                     'instagram_link': instagram_link,
                     'twitter_link': twitter_link,
@@ -236,8 +241,10 @@ def upload_company_csv_file(request):
                     user.country = country
                 if not user.email and email:
                     user.email = email
-                if not user.login_bitmain and login_bitmain:
-                    user.login_bitmain = login_bitmain
+                if not user.individual and individual:
+                    user.individual = individual
+                if not user.individual2 and individual2:
+                    user.individual2 = individual2
                 if not user.telegram_link and telegram_link:
                     user.telegram_link = telegram_link
                 if not user.instagram_link and instagram_link:
@@ -355,18 +362,6 @@ class UserList(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class CustomTokenObtainPairView(TokenObtainPairView):
-    # Добавляем свойство permission_classes, чтобы отключить аутентификацию для получения токена
-    permission_classes = []
-
-
-class CustomProtectedView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request):
-        return Response({'message': 'This is a protected view'})
 
 
 class ProtectedView(APIView):

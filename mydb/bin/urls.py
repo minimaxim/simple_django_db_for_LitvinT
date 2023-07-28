@@ -1,8 +1,6 @@
 from django.urls import path
 from . import views
-from .views import UserList
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
-from .views import CustomTokenObtainPairView, CustomProtectedView
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from .views import ProtectedView
 
 
