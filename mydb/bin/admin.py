@@ -131,6 +131,7 @@ class CategoryAdmin(admin.ModelAdmin):
         )
     search_fields = ('id',)
     actions = (create_excel, create_csv)
+    list_editable = ('counter', 'feedback')
 
 
 @admin.register(Company)
@@ -145,3 +146,4 @@ class CompanyAdmin(admin.ModelAdmin):
     )
     search_fields = ('id',)
     actions = (create_excel_company, create_csv_company)
+    list_editable = ('counter', 'feedback')
