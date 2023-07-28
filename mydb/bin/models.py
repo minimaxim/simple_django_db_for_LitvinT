@@ -15,6 +15,8 @@ class User(models.Model):
     facebook_link = models.CharField(max_length=128, verbose_name='facebook_link', blank=True)
     linkedin_link = models.CharField(max_length=128, verbose_name='linkedin_link', blank=True)
     whatsapp_link = models.CharField(max_length=64, verbose_name='whatsapp_link', blank=True)
+    counter = models.CharField(max_length=3, verbose_name='counter', blank=True)
+    feedback = models.TextField(max_length=1024, verbose_name='feedback', blank=True)
 
     class Meta:
         db_table = 'users'
@@ -40,6 +42,8 @@ class Company(models.Model):
     facebook_link = models.CharField(max_length=128, verbose_name='facebook_link', blank=True)
     linkedin_link = models.CharField(max_length=128, verbose_name='linkedin_link', blank=True)
     whatsapp_link = models.CharField(max_length=64, verbose_name='whatsapp_link', blank=True)
+    counter = models.CharField(max_length=3, verbose_name='counter', blank=True)
+    feedback = models.TextField(max_length=1024, verbose_name='feedback', blank=True)
 
     class Meta:
         db_table = 'company'

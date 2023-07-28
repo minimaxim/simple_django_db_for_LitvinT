@@ -1,14 +1,13 @@
-import numpy as np  # Добавляем модуль numpy для обработки NaN значений
+import numpy as np
 import pandas as pd
 from django.shortcuts import render, redirect, reverse
+from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from .models import User, Company
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from .serializers import UserSerializer
-from rest_framework.permissions import IsAuthenticated
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from .serializers import UserSerializer, CompanySerializer
 
 
 def upload_user_excel_file(request):
@@ -20,18 +19,15 @@ def upload_user_excel_file(request):
 
         # Проверка на расширение файла
         if not excel_file.name.endswith('.xlsx'):
-            return render(request, 'user_excel.html')  # Replace 'your_app' with the actual app name if needed
+            return render(request, 'user_excel.html')
 
-        # Загрузка файла Excel в DataFrame
         try:
             df = pd.read_excel(excel_file)
         except Exception as e:
             return render(request, 'user_excel.html', {'error': f'Ошибка при чтении файла: {e}'})
 
-        # Заменяем NaN значения на пустую строку
         df.replace({np.nan: ''}, inplace=True)
 
-        # Проходим по DataFrame и создаем записи в базе данных
         for _, row in df.iterrows():
             name = row.get('name', '')
             country = row.get('country', '')
@@ -45,6 +41,8 @@ def upload_user_excel_file(request):
             facebook_link = row.get('facebook_link', '')
             linkedin_link = row.get('linkedin_link', '')
             whatsapp_link = row.get('whatsapp_link', '')
+            counter = row.get('counter', '')
+            feedback = row.get('feedback', '')
 
             # Создаем пользователя, пропустив создание, если такой номер телефона уже существует
             user, created = User.objects.get_or_create(
@@ -61,10 +59,11 @@ def upload_user_excel_file(request):
                     'facebook_link': facebook_link,
                     'linkedin_link': linkedin_link,
                     'whatsapp_link': whatsapp_link,
+                    'counter': counter,
+                    'feedback': feedback
                 }
             )
 
-            # Если пользователь уже существует, заполним его данные только если они отсутствуют
             if not created:
                 if not user.name and name:
                     user.name = name
@@ -88,10 +87,13 @@ def upload_user_excel_file(request):
                     user.linkedin_link = linkedin_link
                 if not user.whatsapp_link and whatsapp_link:
                     user.whatsapp_link = whatsapp_link
+                if not user.counter and counter:
+                    user.counter = counter
+                if not user.feedback and feedback:
+                    user.feedback = feedback
 
                 user.save()
 
-        # Выполняем редирект на страницу admin
         return redirect(reverse('admin:index'))
 
     return render(request, 'user_excel.html')
@@ -128,6 +130,8 @@ def upload_company_excel_file(request):
             facebook_link = row.get('facebook_link', '')
             linkedin_link = row.get('linkedin_link', '')
             whatsapp_link = row.get('whatsapp_link', '')
+            counter = row.get('counter', '')
+            feedback = row.get('feedback', '')
 
             user, created = Company.objects.get_or_create(
                 phone=phone,
@@ -144,6 +148,8 @@ def upload_company_excel_file(request):
                     'facebook_link': facebook_link,
                     'linkedin_link': linkedin_link,
                     'whatsapp_link': whatsapp_link,
+                    'counter': counter,
+                    'feedback': feedback
                 }
             )
 
@@ -172,6 +178,10 @@ def upload_company_excel_file(request):
                     user.linkedin_link = linkedin_link
                 if not user.whatsapp_link and whatsapp_link:
                     user.whatsapp_link = whatsapp_link
+                if not user.counter and counter:
+                    user.counter = counter
+                if not user.feedback and feedback:
+                    user.feedback = feedback
 
                 user.save()
 
@@ -194,7 +204,8 @@ def upload_company_csv_file(request):
             df = pd.read_csv(csv_file, delimiter=',',
                              names=['name', 'country', 'email', 'phone', 'individual', 'individual2', 'telegram_link',
                                     'instagram_link', 'twitter_link', 'vk_link', 'facebook_link', 'linkedin_link',
-                                    'whatsapp_link'])
+                                    'whatsapp_link', 'counter', 'feedback'],
+                             skiprows=1)
 
         except Exception as e:
             return render(request, 'company_csv.html', {'error': f'Ошибка при чтении файла: {e}'})
@@ -215,6 +226,8 @@ def upload_company_csv_file(request):
             facebook_link = row['facebook_link']
             linkedin_link = row['linkedin_link']
             whatsapp_link = row['whatsapp_link']
+            counter = row['counter']
+            feedback = row['feedback']
 
             user, created = Company.objects.get_or_create(
                 phone=phone,
@@ -231,6 +244,8 @@ def upload_company_csv_file(request):
                     'facebook_link': facebook_link,
                     'linkedin_link': linkedin_link,
                     'whatsapp_link': whatsapp_link,
+                    'counter': counter,
+                    'feedback': feedback
                 }
             )
 
@@ -259,6 +274,10 @@ def upload_company_csv_file(request):
                     user.linkedin_link = linkedin_link
                 if not user.whatsapp_link and whatsapp_link:
                     user.whatsapp_link = whatsapp_link
+                if not user.counter and counter:
+                    user.counter = counter
+                if not user.feedback and feedback:
+                    user.feedback = feedback
 
                 user.save()
 
@@ -281,7 +300,8 @@ def upload_user_csv_file(request):
             df = pd.read_csv(csv_file, delimiter=',',
                              names=['name', 'country', 'email', 'phone', 'login_bitmain', 'telegram_link',
                                     'instagram_link', 'twitter_link', 'vk_link', 'facebook_link', 'linkedin_link',
-                                    'whatsapp_link'])
+                                    'whatsapp_link', 'counter', 'feedback'],
+                             skiprows=1)
 
         except Exception as e:
             return render(request, 'user_csv.html', {'error': f'Ошибка при чтении файла: {e}'})
@@ -301,6 +321,8 @@ def upload_user_csv_file(request):
             facebook_link = row['facebook_link']
             linkedin_link = row['linkedin_link']
             whatsapp_link = row['whatsapp_link']
+            counter = row['counter']
+            feedback = row['feedback']
 
             user, created = User.objects.get_or_create(
                 phone=phone,
@@ -316,6 +338,8 @@ def upload_user_csv_file(request):
                     'facebook_link': facebook_link,
                     'linkedin_link': linkedin_link,
                     'whatsapp_link': whatsapp_link,
+                    'counter': counter,
+                    'feedback': feedback
                 }
             )
 
@@ -342,6 +366,10 @@ def upload_user_csv_file(request):
                     user.linkedin_link = linkedin_link
                 if not user.whatsapp_link and whatsapp_link:
                     user.whatsapp_link = whatsapp_link
+                if not user.counter and counter:
+                    user.counter = counter
+                if not user.feedback and feedback:
+                    user.feedback = feedback
 
                 user.save()
 
@@ -350,7 +378,10 @@ def upload_user_csv_file(request):
     return render(request, 'user_csv.html')
 
 
-class UserList(APIView):
+class ProtectedViewUser(APIView):
+    permission_classes = [IsAuthenticated]
+    http_method_names = ["get", "post"]
+
     def get(self, request):
         users = User.objects.all()
         serializer = UserSerializer(users, many=True)
@@ -364,10 +395,18 @@ class UserList(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class ProtectedView(APIView):
+class ProtectedViewCompany(APIView):
     permission_classes = [IsAuthenticated]
+    http_method_names = ["get", "post"]
 
     def get(self, request):
-        users = User.objects.all()
-        serializer = UserSerializer(users, many=True)  # Предполагая, что у вас есть сериализатор для модели User
+        companies = Company.objects.all()
+        serializer = CompanySerializer(companies, many=True)
         return Response(serializer.data)
+
+    def post(self, request):
+        serializer = CompanySerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
