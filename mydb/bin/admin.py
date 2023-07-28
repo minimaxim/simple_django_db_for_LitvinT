@@ -8,7 +8,7 @@ from django.http import HttpResponse
 from .models import User, Company
 
 
-@admin.action(description='Выгрзить Excel')
+@admin.action(description='Выгрузить Excel')
 def create_excel(self, request, queryset):
     workbook = openpyxl.Workbook()
     worksheet = workbook.active
@@ -40,7 +40,7 @@ def create_excel(self, request, queryset):
     return response
 
 
-@admin.action(description='Выгрзить CSV')
+@admin.action(description='Выгрузить CSV')
 def create_csv(self, request, queryset):
     response = HttpResponse(content_type='text/csv')
     response[
