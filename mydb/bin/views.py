@@ -1,15 +1,17 @@
 import numpy as np
 import pandas as pd
 from django.shortcuts import render, redirect, reverse
+from django.urls import reverse_lazy
 from django.views.generic import TemplateView
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.views import LoginView
 from django.contrib.auth.decorators import login_required
 
-
+from .forms import LoginForm
 from .models import User, Company
 from .serializers import UserSerializer, CompanySerializer
 
@@ -415,28 +417,7 @@ class ProtectedViewCompany(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class IndexTemplateView(TemplateView):
+class LoginUserView(LoginView):
+    form_class = LoginForm
     template_name = 'bin/index.html'
-
-
-def login_view(request):
-    if request.method == 'POST':
-        username = request.POST['name']
-        password = request.POST['password']
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('/admin/')
-    return render(request, 'login.html')
-
-
-@login_required
-def admin_view(request):
-    return render(request, 'admin.html')
-
-
-def logout_view(request):
-    logout(request)
-    return redirect('/login/')
-
 

@@ -88,23 +88,22 @@
 </style>
 
 <div class="container-fluid">
-
- <div class="col-md-4 offset-md-4">
- <div class="form-container">
- <div class="form-icon"><i class="fa fa-user"></i></div>
- <h3 class="title">Login</h3>
- <form class="form-horizontal">
- <div class="form-group">
- <label>name</label>
- <input class="form-control" type="name" placeholder="his name">
- </div>
- <div class="form-group">
- <label>password</label>
- <input class="form-control" type="password" placeholder="robert polson">
- </div>
- <button type="button" class="btn btn-default">Login</button>
- </form>
- </div>
- </div>
-
+    <div class="col-md-4 offset-md-4">
+        <div class="form-container">
+            <div class="form-icon"><i class="fa fa-user"></i></div>
+            <h3 class="title">Login</h3>
+            <form class="form-horizontal" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label>Name</label>
+                    {{ form.username }}
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    {{ form.password }}
+                </div>
+                <button type="submit" class="btn btn-default">Login</button>
+            </form>
+        </div>
+    </div>
 </div>

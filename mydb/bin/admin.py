@@ -9,7 +9,7 @@ from .models import User, Company
 
 
 @admin.action(description='Выгрузить Excel')
-def create_excel(self, request, queryset):
+def create_excel_user(self, request, queryset):
     workbook = openpyxl.Workbook()
     worksheet = workbook.active
 
@@ -71,14 +71,15 @@ def create_excel_company(self, request, queryset):
         worksheet.cell(row=row_num, column=14).value = obj.feedback
 
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    response['Content-Disposition'] = f'attachment; filename=export {datetime.strftime(datetime.now(), "%d/%m/%y")}.xlsx'
+    response[
+        'Content-Disposition'] = f'attachment; filename=export {datetime.strftime(datetime.now(), "%d/%m/%y")}.xlsx'
     workbook.save(response)
 
     return response
 
 
 @admin.action(description='Выгрузить CSV')
-def create_csv(self, request, queryset):
+def create_csv_user(self, request, queryset):
     response = HttpResponse(content_type='text/csv')
     response[
         'Content-Disposition'] = f'attachment; filename="export {datetime.strftime(datetime.now(), "%d/%m/%y")}.csv"'
@@ -120,7 +121,7 @@ def create_csv_company(self, request, queryset):
 
 
 @admin.register(User)
-class CategoryAdmin(admin.ModelAdmin):
+class UserAdmin(admin.ModelAdmin):
     list_display = (
         'id', 'name', 'country', 'email', 'phone', 'login_bitmain', 'telegram_link', 'instagram_link', 'twitter_link',
         'vk_link', 'facebook_link', 'linkedin_link', 'whatsapp_link', 'counter', 'feedback'
@@ -128,9 +129,9 @@ class CategoryAdmin(admin.ModelAdmin):
     list_filter = (
         'telegram_link', 'instagram_link', 'twitter_link', 'vk_link', 'facebook_link', 'linkedin_link', 'whatsapp_link',
         'country', 'counter'
-        )
+    )
     search_fields = ('id',)
-    actions = (create_excel, create_csv)
+    actions = (create_excel_user, create_csv_user)
     list_editable = ('counter', 'feedback')
 
 
