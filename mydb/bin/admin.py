@@ -32,8 +32,8 @@ def create_excel(self, request, queryset):
         worksheet.cell(row=row_num, column=10).value = obj.facebook_link
         worksheet.cell(row=row_num, column=11).value = obj.linkedin_link
         worksheet.cell(row=row_num, column=12).value = obj.whatsapp_link
-        worksheet.cell(row=row_num, column=13).value = obj.whatsapp_link
-        worksheet.cell(row=row_num, column=14).value = obj.whatsapp_link
+        worksheet.cell(row=row_num, column=13).value = obj.counter
+        worksheet.cell(row=row_num, column=14).value = obj.feedback
 
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = f'attachment; filename=export{datetime.strftime(datetime.now(), "%d/%m/%y")}.xlsx'
@@ -67,8 +67,8 @@ def create_excel_company(self, request, queryset):
         worksheet.cell(row=row_num, column=10).value = obj.facebook_link
         worksheet.cell(row=row_num, column=11).value = obj.linkedin_link
         worksheet.cell(row=row_num, column=12).value = obj.whatsapp_link
-        worksheet.cell(row=row_num, column=13).value = obj.whatsapp_link
-        worksheet.cell(row=row_num, column=14).value = obj.whatsapp_link
+        worksheet.cell(row=row_num, column=13).value = obj.counter
+        worksheet.cell(row=row_num, column=14).value = obj.feedback
 
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = f'attachment; filename=export {datetime.strftime(datetime.now(), "%d/%m/%y")}.xlsx'

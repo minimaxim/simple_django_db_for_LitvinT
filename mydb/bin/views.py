@@ -6,6 +6,9 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+
 
 from .models import User, Company
 from .serializers import UserSerializer, CompanySerializer
@@ -18,7 +21,6 @@ def upload_user_excel_file(request):
 
         excel_file = request.FILES['excel_file']
 
-        # Проверка на расширение файла
         if not excel_file.name.endswith('.xlsx'):
             return render(request, 'user_excel.html')
 
@@ -415,4 +417,26 @@ class ProtectedViewCompany(APIView):
 
 class IndexTemplateView(TemplateView):
     template_name = 'bin/index.html'
+
+
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST['name']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('/admin/')
+    return render(request, 'login.html')
+
+
+@login_required
+def admin_view(request):
+    return render(request, 'admin.html')
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('/login/')
+
 

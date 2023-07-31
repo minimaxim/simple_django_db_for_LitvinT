@@ -12,5 +12,5 @@ urlpatterns = [
     path('api/v1/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/v1/users/', ProtectedViewUser.as_view(), name='protected_view_user'),
     path('api/v1/companies/', ProtectedViewCompany.as_view(), name='protected_view_company'),
-    path('', IndexTemplateView.as_view(), name='index')
+    path('', IndexTemplateView.as_view(), name='index'),
 ]
