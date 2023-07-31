@@ -15,6 +15,8 @@ class User(models.Model):
     facebook_link = models.CharField(max_length=128, verbose_name='facebook_link', blank=True)
     linkedin_link = models.CharField(max_length=128, verbose_name='linkedin_link', blank=True)
     whatsapp_link = models.CharField(max_length=64, verbose_name='whatsapp_link', blank=True)
+    counter = models.CharField(max_length=3, verbose_name='counter', blank=True)
+    feedback = models.CharField(max_length=1024, verbose_name='feedback', blank=True)
 
     class Meta:
         db_table = 'users'
@@ -31,7 +33,8 @@ class Company(models.Model):
     country = models.CharField(max_length=16, verbose_name='country', blank=True)
     email = models.EmailField(max_length=128, verbose_name='email', blank=True)
     phone = models.CharField(max_length=32, verbose_name='phone', blank=True, null=True, unique=True)
-    login_bitmain = models.CharField(max_length=128, verbose_name='login_bitmain', blank=True)
+    individual = models.CharField(max_length=64, verbose_name='first individual', blank=True)
+    individual2 = models.CharField(max_length=64, verbose_name='second individual', blank=True)
     telegram_link = models.CharField(max_length=128, verbose_name='telegram_link', blank=True)
     instagram_link = models.CharField(max_length=128, verbose_name='instagram_link', blank=True)
     twitter_link = models.CharField(max_length=128, verbose_name='twitter_link', blank=True)
@@ -39,8 +42,12 @@ class Company(models.Model):
     facebook_link = models.CharField(max_length=128, verbose_name='facebook_link', blank=True)
     linkedin_link = models.CharField(max_length=128, verbose_name='linkedin_link', blank=True)
     whatsapp_link = models.CharField(max_length=64, verbose_name='whatsapp_link', blank=True)
+    counter = models.CharField(max_length=3, verbose_name='counter', blank=True)
+    feedback = models.CharField(max_length=1024, verbose_name='feedback', blank=True)
 
     class Meta:
         db_table = 'company'
         verbose_name = 'сompany'
         verbose_name_plural = 'companies'
+
+
