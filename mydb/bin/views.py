@@ -49,7 +49,6 @@ def upload_user_excel_file(request):
             counter = row.get('counter', '')
             feedback = row.get('feedback', '')
 
-            # Создаем пользователя, пропустив создание, если такой номер телефона уже существует
             user, created = User.objects.get_or_create(
                 phone=phone,
                 defaults={

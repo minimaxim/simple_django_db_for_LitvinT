@@ -105,16 +105,16 @@ def create_csv_company(self, request, queryset):
         'Content-Disposition'] = f'attachment; filename="export{datetime.strftime(datetime.now(), "%d/%m/%y")}.csv"'
     writer = csv.writer(response)
 
-    # Здесь указываем необходимые поля модели
+
     fields = ['name', 'country', 'email', 'phone', 'individual', 'individual2' 'telegram_link', 'instagram_link',
               'twitter_link', 'vk_link', 'facebook_link', 'linkedin_link', 'whatsapp_link', 'counter', 'feedback']
     writer.writerow(fields)
 
     for obj in queryset:
-        # Здесь указываем значения полей модели в нужном порядке
         data = [obj.name, obj.country, obj.email, obj.phone, obj.individual, obj.individual2, obj.telegram_link,
                 obj.instagram_link, obj.twitter_link, obj.vk_link, obj.facebook_link, obj.linkedin_link,
                 obj.whatsapp_link, obj.counter, obj.feedback]
+
         writer.writerow(data)
 
     return response
