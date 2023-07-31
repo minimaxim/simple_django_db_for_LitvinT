@@ -49,3 +49,5 @@ class Company(models.Model):
         db_table = 'company'
         verbose_name = 'сompany'
         verbose_name_plural = 'companies'
+
+

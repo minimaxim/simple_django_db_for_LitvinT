@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 from django.shortcuts import render, redirect, reverse
+from django.views.generic import TemplateView
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -410,3 +411,8 @@ class ProtectedViewCompany(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class IndexTemplateView(TemplateView):
+    template_name = 'bin/index.html'
+
